@@ -30,9 +30,9 @@ appleboy/ssh-action，沿用 tennis-bot 那套模式）。
 
 | Secret | 说明 | 示例值 |
 |---|---|---|
-| `DEPLOY_HOST` | 服务器公网 IP | `129.150.46.22` |
+| `DEPLOY_HOST` | 服务器公网 IP | `xxx.xxx.xxx.22` |
 | `SSH_USER` | SSH 用户 | `root` |
-| `SSH_PORT` | SSH 端口 | `6522` |
+| `SSH_PORT` | SSH 端口 | `22` |
 | `SSH_PRIVATE_KEY` | 部署私钥（`-----BEGIN OPENSSH PRIVATE KEY-----` 整段） | — |
 | `DEPLOY_DIR` | 服务器上的部署目录 | `/home/admin/apps/ops-tools/flight-dashboard` |
 
@@ -48,7 +48,7 @@ server 块内（`alias` 路径换成 `DEPLOY_DIR` 的实际值），然后：
 nginx -t && systemctl reload nginx
 ```
 
-配好后访问 `https://ops.nnde.de/dashboard/`。
+配好后访问 `https://ops.nnde.de/flight-dashboard/`。
 
 ### 部署流程说明
 
