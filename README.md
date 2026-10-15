@@ -34,7 +34,7 @@ appleboy/ssh-action，沿用 tennis-bot 那套模式）。
 | `SSH_USER` | SSH 用户 | `root` |
 | `SSH_PORT` | SSH 端口 | `22` |
 | `SSH_PRIVATE_KEY` | 部署私钥（`-----BEGIN OPENSSH PRIVATE KEY-----` 整段） | — |
-| `DEPLOY_DIR` | 服务器上的部署目录 | `/home/admin/apps/ops-tools/flight-dashboard` |
+| `DEPLOY_DIR` | 服务器上的部署目录 | `~/flight-dashboard` |
 
 > 私钥单独生成一对部署密钥即可：`ssh-keygen -t ed25519 -f ~/.ssh/dashboard_deploy`，
 > 把 `.pub` 加到服务器 `~/.ssh/authorized_keys`，私钥整段贴进 `SSH_PRIVATE_KEY`。
