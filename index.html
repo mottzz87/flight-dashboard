@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>东京 ⇄ 成都机票</title>
+<meta name="description" content="东京往返成都机票价格监控看板">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-row">
+    <div class="title-block">
+      <h1>东京 <span class="swap">⇄</span> 成都</h1>
+      <p class="sub">往返机票监控 · 每 3 小时更新</p>
+    </div>
+    <div class="updated" id="updated"><span class="dot"></span><span id="updated-text">加载中…</span></div>
+  </div>
+  <div class="tags" aria-label="筛选条件">
+    <span class="tag">单程最多中转 1 次</span>
+    <span class="tag">去程 23:00 前到达</span>
+    <span class="tag">单程 ≤ 12 小时</span>
+  </div>
+  <nav class="combos" id="combos" aria-label="日期组合"></nav>
+</header>
+
+<main>
+  <section id="latest" aria-label="当前价格"></section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>价格走势</h2>
+      <span class="hint">每日最低价（日元）</span>
+    </div>
+    <div class="chart-wrap"><canvas id="chart"></canvas></div>
+    <div class="chart-empty" id="chart-empty" hidden>暂无历史数据</div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>每日汇总</h2>
+      <span class="hint">每天最低价 / 直飞最低价各一条</span>
+    </div>
+    <div id="history"></div>
+  </section>
+</main>
+
+<footer>
+  数据来源 tour.ne.jp · 接口 <code>/flights/api</code> · 经济舱单人往返含税
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
