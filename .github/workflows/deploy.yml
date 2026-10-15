@@ -1,0 +1,30 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy dashboard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Oracle server
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          port: ${{ secrets.SSH_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            DIR="${{ secrets.DEPLOY_DIR }}"
+            if [ -d "$DIR/.git" ]; then
+              cd "$DIR" && git pull --ff-only
+            else
+              mkdir -p "$(dirname "$DIR")"
+              git clone https://github.com/mottzz87/flight-dashboard.git "$DIR"
+            fi
+            echo "deployed to $DIR at $(date -u +%FT%TZ)"
