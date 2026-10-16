@@ -422,6 +422,8 @@ function renderHistory(animated) {
   }).join('');
   box.querySelectorAll('.day-head').forEach((b) =>
     b.addEventListener('click', () => b.closest('.day').classList.toggle('open')));
+  const firstDay = box.querySelector('.day');
+  if (firstDay) firstDay.classList.add('open');
   if (totalPages > 1) {
     pager.hidden = false;
     $('pg-info').textContent = `${historyPage + 1} / ${totalPages}`;
