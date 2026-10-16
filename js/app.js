@@ -56,6 +56,34 @@ function esc(s) {
     .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+/* 机场三字码 → 中文名 */
+const AIRPORT_ZH = {
+  NRT: '东京成田', HND: '东京羽田', KIX: '大阪关西', NGO: '名古屋中部', FUK: '福冈', CTS: '札幌新千岁', SDJ: '仙台', OKA: '那霸',
+  CTU: '成都双流', TFU: '成都天府',
+  PVG: '上海浦东', SHA: '上海虹桥', PEK: '北京首都', PKX: '北京大兴',
+  CAN: '广州白云', SZX: '深圳宝安', HKG: '香港', MFM: '澳门',
+  CKG: '重庆江北', XIY: '西安咸阳', KMG: '昆明长水', WUH: '武汉天河', CSX: '长沙黄花',
+  NKG: '南京禄口', HGH: '杭州萧山', XMN: '厦门高崎', TAO: '青岛胶东', TSN: '天津滨海',
+  SHE: '沈阳桃仙', DLC: '大连周水子', HRB: '哈尔滨太平', CGO: '郑州新郑',
+  HAK: '海口美兰', SYX: '三亚凤凰', NNG: '南宁吴圩', KWL: '桂林两江', FOC: '福州长乐',
+  URC: '乌鲁木齐天山', ZGC: '兰州中川', INC: '银川河东', XNN: '西宁曹家堡',
+  HET: '呼和浩特白塔', TYN: '太原武宿', SJW: '石家庄正定', HFE: '合肥新桥', KHN: '南昌昌北',
+  WUX: '无锡硕放', CZX: '常州奔牛', YNT: '烟台蓬莱',
+  ICN: '首尔仁川', GMP: '首尔金浦', PUS: '釜山金海',
+  TPE: '台北桃园', TSA: '台北松山', KHH: '高雄小港',
+  SIN: '新加坡樟宜', BKK: '曼谷素万那普', DMK: '曼谷廊曼', KUL: '吉隆坡', HKT: '普吉', CGK: '雅加达苏加诺',
+  MNL: '马尼拉', HAN: '河内内排', SGN: '胡志明新山一',
+};
+
+/* 把摘要里的机场三字码标注中文：HND → 东京羽田(HND)；已有中文标注的不重复处理 */
+function annotateAirports(s) {
+  return String(s).replace(/(^|[^A-Z(])([A-Z]{3})\b/g, (m, pre, code) => {
+    const zh = AIRPORT_ZH[code];
+    if (!zh || pre === '(') return m;
+    return `${pre}${zh}(${code})`;
+  });
+}
+
 /* ---------- 动画 ---------- */
 function motionLib() { return window.Motion || null; }
 
@@ -84,10 +112,11 @@ function legHtml(tag, summary, transit) {
   if (!summary) return '';
   // 摘要自带"去/返"前缀时去掉，避免和标签叠字成"去去"
   const clean = String(summary).replace(/^[去返]\s*/, '');
+  const annotated = annotateAirports(clean);
   // 中转信息若已写在摘要里（如 ｜广州白云中转等待3h30m），不再另起一行重复
   const t = transit && transit !== '直飞无中转' ? String(transit) : '';
-  const dup = t && clean.replace(/\s+/g, '').includes(t.replace(/\s+/g, ''));
-  return `<div class="leg"><span class="leg-tag">${tag}</span>${esc(clean)}` +
+  const dup = t && annotated.replace(/\s+/g, '').includes(t.replace(/\s+/g, ''));
+  return `<div class="leg"><span class="leg-tag">${tag}</span>${esc(annotated)}` +
     (t && !dup ? `<span class="transit">${esc(t)}</span>` : '') +
     `</div>`;
 }
