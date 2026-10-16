@@ -23,7 +23,7 @@ let historyPage = 0;
 /* 30 秒无操作后柔和自动轮播日期组合；任何交互立即停止 */
 let idleTimer = null;
 let autoTimer = null;
-const IDLE_MS = 30000;
+const IDLE_MS = 60000;
 const AUTO_MS = 8000;
 
 function stopAuto() {
