@@ -155,10 +155,13 @@ function dimCard(r) {
     return `<div class="card"><div class="card-eyebrow">${label}</div>` +
       `<p class="empty-note">本组合暂无直飞方案</p></div>`;
   }
+  const link = (inner, cls) => r.resultUrl
+    ? `<a class="${cls}" href="${esc(r.resultUrl)}" target="_blank" rel="noopener" title="打开比价结果页">${inner}</a>`
+    : inner;
   return `<div class="card">
     <div class="card-eyebrow">${label}</div>
-    <div class="card-price">${fmtYen(r.priceYen)}</div>
-    <div class="card-meta"><b>${esc(r.airline || '')}</b>${r.provider ? ' · ' + esc(r.provider) : ''}${r.totalDurationMinutes ? ' · 共' + fmtDur(r.totalDurationMinutes) : ''}</div>
+    <div class="card-price">${link(fmtYen(r.priceYen), 'price-link')}</div>
+    <div class="card-meta"><b>${link(esc(r.airline || ''), 'airline-link')}</b>${r.provider ? ' · ' + esc(r.provider) : ''}${r.totalDurationMinutes ? ' · 共' + fmtDur(r.totalDurationMinutes) : ''}</div>
     <div class="journey">
       ${legHtml('去', r.outboundSummary, r.outboundTransferDetails)}
       ${legHtml('返', r.returnSummary, r.returnTransferDetails)}
@@ -208,7 +211,7 @@ function moveIndicator(animated) {
 /* ---------- Hero ---------- */
 function setHeroPrice(to, animated) {
   const M = motionLib();
-  const el = $('hero-price');
+  const el = $('hero-price-num') || $('hero-price');
   if (animated && canAnimate()) {
     M.animate(shownPrice, to, {
       duration: 0.9, ease: EASE,
@@ -231,10 +234,16 @@ function renderHero(animated) {
     $('hero-sub').innerHTML = '';
     return;
   }
+  const link = (inner, cls) => r.resultUrl
+    ? `<a class="${cls}" href="${esc(r.resultUrl)}" target="_blank" rel="noopener" title="打开比价结果页">${inner}</a>`
+    : inner;
+  $('hero-price').innerHTML = r.resultUrl
+    ? `<a class="hero-price-link" href="${esc(r.resultUrl)}" target="_blank" rel="noopener" title="打开比价结果页"><span id="hero-price-num"></span></a>`
+    : '';
   setHeroPrice(r.priceYen, animated);
   $('hero-delta').innerHTML = deltaPill(r.deltaYen);
   $('hero-sub').innerHTML =
-    `<b>${esc(r.airline || '')}</b>${r.provider ? ' · ' + esc(r.provider) : ''}${r.totalDurationMinutes ? ' · 共' + fmtDur(r.totalDurationMinutes) : ''}`;
+    `<b>${link(esc(r.airline || ''), 'sub-link')}</b>${r.provider ? ' · ' + esc(r.provider) : ''}${r.totalDurationMinutes ? ' · 共' + fmtDur(r.totalDurationMinutes) : ''}`;
 }
 
 /* ---------- Bento ---------- */

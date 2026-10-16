@@ -56,6 +56,9 @@ html.anim .reveal, html.anim .reveal-scroll { opacity: 0; }
 .delta-pill.flat { color: var(--fd-muted); background: rgba(184,173,156,0.14); }
 .hero-sub { margin-top: 10px; color: var(--fd-muted); font-size: 14px; }
 .hero-sub b { color: var(--fd-text); font-weight: 600; }
+.hero-price-link, .price-link, .airline-link, .sub-link { color: inherit; text-decoration: none; }
+.hero-price-link:hover { text-decoration: underline; text-decoration-color: var(--fd-accent); text-underline-offset: 10px; }
+.price-link:hover, .airline-link:hover, .sub-link:hover { color: var(--fd-accent); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- 分段选择器 ---------- */
 .segmented { position: relative; display: flex; background: rgba(184,173,156,0.14);
