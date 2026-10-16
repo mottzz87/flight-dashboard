@@ -144,8 +144,6 @@ function moveIndicator(animated) {
   const x = active.offsetLeft, w = active.offsetWidth;
   if (animated && canAnimate()) {
     M.animate(ind, { x, width: w }, { type: 'spring', stiffness: 480, damping: 42 });
-  } else if (M) {
-    M.set(ind, { x, width: w });
   } else {
     ind.style.transform = `translateX(${x}px)`;
     ind.style.width = w + 'px';
