@@ -82,8 +82,13 @@ function playIntro() {
 /* ---------- 卡片 ---------- */
 function legHtml(tag, summary, transit) {
   if (!summary) return '';
-  return `<div class="leg"><span class="leg-tag">${tag}</span>${esc(summary)}` +
-    (transit && transit !== '直飞无中转' ? `<span class="transit">${esc(transit)}</span>` : '') +
+  // 摘要自带"去/返"前缀时去掉，避免和标签叠字成"去去"
+  const clean = String(summary).replace(/^[去返]\s*/, '');
+  // 中转信息若已写在摘要里（如 ｜广州白云中转等待3h30m），不再另起一行重复
+  const t = transit && transit !== '直飞无中转' ? String(transit) : '';
+  const dup = t && clean.replace(/\s+/g, '').includes(t.replace(/\s+/g, ''));
+  return `<div class="leg"><span class="leg-tag">${tag}</span>${esc(clean)}` +
+    (t && !dup ? `<span class="transit">${esc(t)}</span>` : '') +
     `</div>`;
 }
 
