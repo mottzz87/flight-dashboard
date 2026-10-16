@@ -20,6 +20,27 @@ let historyRecords = [];
 let shownPrice = 0;
 let historyPage = 0;
 
+/* 30 秒无操作后柔和自动轮播日期组合；任何交互立即停止 */
+let idleTimer = null;
+let autoTimer = null;
+const IDLE_MS = 30000;
+const AUTO_MS = 8000;
+
+function stopAuto() {
+  if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+}
+
+function armIdle() {
+  clearTimeout(idleTimer);
+  stopAuto();
+  idleTimer = setTimeout(() => {
+    stopAuto();
+    autoTimer = setInterval(() => {
+      transitionCombo((currentCombo + 1) % COMBOS.length);
+    }, AUTO_MS);
+  }, IDLE_MS);
+}
+
 /* ---------- 工具 ---------- */
 const $ = (id) => document.getElementById(id);
 
@@ -486,6 +507,10 @@ function boot() {
   $('pg-prev').addEventListener('click', () => gotoPage(historyPage - 1));
   $('pg-next').addEventListener('click', () => gotoPage(historyPage + 1));
   window.addEventListener('resize', () => { moveIndicator(false); if (latestRecords.length) renderChart(false); });
+  ['mousemove', 'mousedown', 'keydown', 'touchstart', 'wheel', 'scroll'].forEach((ev) =>
+    window.addEventListener(ev, armIdle, { passive: true }));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) armIdle(); });
+  armIdle();
   load();
 }
 
